@@ -4,7 +4,6 @@ import { createPkcePair } from '@/utils/pkce'
 import { env } from '@/config/env'
 import authService from '@/services/authService'
 import { jwtDecode } from 'jwt-decode'
-import type { keyboard } from 'telegraf/markup'
 
 export function useAuth() {
   const route = useRoute()
