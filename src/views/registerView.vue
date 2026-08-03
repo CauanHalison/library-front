@@ -14,8 +14,28 @@ const registerPayload = ref<RegisterPayload>({
   roles: ['OPERADOR'],
 })
 
+const roles = ref([
+  {
+    label: 'Operador',
+    value: 'OPERADOR',
+  },
+  {
+    label: 'Gerente',
+    value: 'GERENTE',
+  },
+])
+
 const isSubmitting = ref(false)
 const errorMessage = ref('')
+
+function toggleRole(value: string) {
+  const index = registerPayload.value.roles.indexOf(value)
+  if (index > -1) {
+    registerPayload.value.roles.splice(index, 1)
+  } else {
+    registerPayload.value.roles.push(value)
+  }
+}
 
 async function register() {
   isSubmitting.value = true
@@ -172,6 +192,45 @@ async function register() {
                 v-model="registerPayload.senha"
                 class="block w-full rounded-xl border border-slate-800/80 bg-slate-950/60 py-3 pl-11 pr-4 text-sm text-slate-100 placeholder-slate-500 transition-all duration-200 focus:border-purple-500/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
               />
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold uppercase tracking-wider text-slate-400"
+              >Perfil de Acesso (Roles)</label
+            >
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div
+                v-for="role in roles"
+                :key="role.value"
+                @click="toggleRole(role.value)"
+                class="flex items-center justify-center gap-3 rounded-xl border border-slate-800/80 bg-slate-950/60 hover:bg-slate-900/80 hover:border-purple-500/40 hover:-translate-y-0.5 px-4 py-3 text-sm font-semibold text-slate-300 transition-all duration-200 cursor-pointer select-none"
+                :class="{
+                  'border-purple-500 bg-purple-500/10 text-purple-300 shadow-lg shadow-purple-500/10':
+                    registerPayload.roles.includes(role.value),
+                }"
+              >
+                <div
+                  class="flex h-4 w-4 shrink-0 items-center justify-center rounded border border-slate-700 transition-all duration-150"
+                  :class="{
+                    'border-purple-500 bg-purple-500 text-white': registerPayload.roles.includes(
+                      role.value,
+                    ),
+                  }"
+                >
+                  <svg
+                    v-if="registerPayload.roles.includes(role.value)"
+                    class="h-3 w-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="3"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span>{{ role.label }}</span>
+              </div>
             </div>
           </div>
 
