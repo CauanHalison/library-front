@@ -66,7 +66,7 @@ function selectGenero(genero: Genero) {
 async function sendLivro() {
   let success = false
 
-  if (props.id && isEditMode) {
+  if (props.id && isEditMode.value) {
     success = await updateLivro(props.id, formData.value as RegisterLivro)
   } else {
     success = await registerLivro(formData.value as RegisterLivro)
@@ -74,8 +74,8 @@ async function sendLivro() {
 
   if (success) {
     alertStore.showAlert({
-      title: `Livro ${isEditMode ? 'Editado' : 'Cadastrado'}!`,
-      message: `O livro "${formData.value.titulo}" foi ${isEditMode ? 'editado' : 'cadastrado'} com sucesso.`,
+      title: `Livro ${isEditMode.value ? 'Editado' : 'Cadastrado'}!`,
+      message: `O livro "${formData.value.titulo}" foi ${isEditMode.value ? 'editado' : 'cadastrado'} com sucesso.`,
       type: 'success',
     })
     router.push('/livros')
@@ -98,7 +98,7 @@ async function deleteCurrentLivro() {
 onMounted(async () => {
   getGeneros()
 
-  if (props.id && isEditMode) {
+  if (props.id && isEditMode.value) {
     const livro = await fetchById(props.id)
 
     if (livro) {

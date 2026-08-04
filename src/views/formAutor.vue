@@ -26,7 +26,7 @@ const formData = ref<RegisterAutor | Autor>({
 async function sendLivro() {
   let success = false
 
-  if (isEditMode && props.id) {
+  if (isEditMode.value && props.id) {
     success = await updateAutor(props.id, formData.value as RegisterAutor)
   } else {
     success = await registerAutor(formData.value as RegisterAutor)
@@ -34,8 +34,8 @@ async function sendLivro() {
 
   if (success) {
     alertStore.showAlert({
-      title: `Autor ${isEditMode ? 'Editado' : 'Cadastrado'}!`,
-      message: `O autor "${formData.value.nome}" foi ${isEditMode ? 'editado' : 'cadastrado'} com sucesso.`,
+      title: `Autor ${isEditMode.value ? 'Editado' : 'Cadastrado'}!`,
+      message: `O autor "${formData.value.nome}" foi ${isEditMode.value ? 'editado' : 'cadastrado'} com sucesso.`,
       type: 'success',
     })
     router.push('/autores')
@@ -56,7 +56,7 @@ async function deleteCurrentAutor() {
 }
 
 onMounted(async () => {
-  if (isEditMode && props.id) {
+  if (isEditMode.value && props.id) {
     const autor = await fetchById(props.id)
     if (autor) {
       formData.value = {
